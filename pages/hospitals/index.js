@@ -2,22 +2,42 @@ import client from '../../lib/sanityConfig/client';
 import {useState} from 'react'
 import { motion } from 'framer-motion';
 import { container, content } from '../../lib/motion/variants';
-
+import getRequests from '../../custom-hooks/getRequests';
 import styles from '../../styles/Home.module.css';
 
 export default function Home() {
     const [bloodType, setBloodType] = useState('Karpoš')
     const [location, setLocation] = useState('A+')
     const [hospital, setHospital] = useState('Zan Mitrev')
+    const [status, setStatus] = useState('active')
+    const [requests] = getRequests(client)
+  
     function handleSubmit(){
         client.create({
             _type: 'request',
             hospital: hospital,
             bloodType: bloodType,
             location: location,
-            status: 'active'
+            status: status
         }).then(res => console.log(res))
     }
+    function handleStatus(id, status){
+        //fetch single document here
+        //every request has own id
+        console.log("reqies",  requests?.[0]._id)
+        client
+        .patch(requests?.[1]._id || 'random id') // Document ID to patch
+        .set({status: 'complete'}) // Shallow merge // Increment field by count
+        .commit() // Perform the patch and return a promise
+        .then((updatedRequest) => {
+          console.log('Hurray, the request is updated! New document:')
+          console.log(updatedRequest)
+        })
+        .catch((err) => {
+          console.error('Oh no, the update failed: ', err.message)
+        })
+    }
+
     return (
         <motion.div variants={container} initial='initial' animate='enter' exit='exit' >
             <div className={styles.main}>
