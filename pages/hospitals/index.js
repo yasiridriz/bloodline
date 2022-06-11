@@ -1,11 +1,23 @@
-
-
+import client from '../../lib/sanityConfig/client';
+import {useState} from 'react'
 import { motion } from 'framer-motion';
 import { container, content } from '../../lib/motion/variants';
 
 import styles from '../../styles/Home.module.css';
 
 export default function Home() {
+    const [bloodType, setBloodType] = useState('Karpoš')
+    const [location, setLocation] = useState('A+')
+    const [hospital, setHospital] = useState('Zan Mitrev')
+    function handleSubmit(){
+        client.create({
+            _type: 'request',
+            hospital: hospital,
+            bloodType: bloodType,
+            location: location,
+            status: 'active'
+        }).then(res => console.log(res))
+    }
     return (
         <motion.div variants={container} initial='initial' animate='enter' exit='exit' >
             <div className={styles.main}>
@@ -14,18 +26,18 @@ export default function Home() {
                     <div className="row justify-content-center">
                         <div className="col-md-12">
                             <div className='row justify-content-between' >
-                                <div className='col-md-5' style={{ margin: '3em 0' }}>
+                                <div  className='col-md-5' style={{ margin: '3em 0' }}>
                                     <motion.h2> New Request </motion.h2>
                                     <motion.div variants={content} className="group">
                                         <label>Location</label>
-                                        <select name='bloodType' value=''>
+                                        <select onChange={(e)=>setLocation(e.target.value)} name='location'>
                                             <option>Karpoš</option>
                                             <option>Centar</option>
                                         </select>
                                     </motion.div>
                                     <motion.div variants={content} className="group">
                                         <label>Blood Type*</label>
-                                        <select name='bloodType'>
+                                        <select onChange={(e)=>setBloodType(e.target.value)} name='bloodType'>
                                             <option>A+</option>
                                             <option>A-</option>
                                             <option>B+</option>
@@ -36,7 +48,7 @@ export default function Home() {
                                             <option>0-</option>
                                         </select>
                                     </motion.div>
-                                    <input type="submit" className="button" value="Send Request" />
+                                    <input onClick={handleSubmit} type="submit" className="button" value="Send Request" />
                                 </div>
                                 <div className='col-md-6' style={{ margin: '3em 0' }}>
                                     <motion.h2> Previous Requests </motion.h2>

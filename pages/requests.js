@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { container, content } from '../lib/motion/variants';
 import styles from '../styles/Home.module.css';
+import client from '../lib/sanityConfig/client';
 
 export default function Home() {
 
