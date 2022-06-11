@@ -70,7 +70,7 @@ const Layout = ({ children }) => {
             <li>
               <div className="lang" style={{position: 'absolute', right: '0', top: '0'}}>
                 {locales.map((locale) => (
-                  <span>
+                  <span key={locale}>
                     <a href={`#${locale}`} key={locale} onClick={() => handleLocaleChange(locale)}>
                       {locale}
                     </a> &nbsp; &nbsp;
