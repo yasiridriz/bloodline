@@ -26,8 +26,8 @@ export default function Home() {
         //every request has own id
         console.log("reqies",  requests?.[0]._id)
         client
-        .patch(requests?.[1]._id || 'random id') // Document ID to patch
-        .set({status: 'complete'}) // Shallow merge // Increment field by count
+        .patch(id) // Document ID to patch
+        .set({status: status}) // Shallow merge // Increment field by count
         .commit() // Perform the patch and return a promise
         .then((updatedRequest) => {
           console.log('Hurray, the request is updated! New document:')
