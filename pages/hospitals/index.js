@@ -60,20 +60,20 @@ const Hospitals = (props) => {
             mutateRequests();
             setIsSubmitting(false);
             setHasSubmitted(true);
-            // const messageRes = await fetch('/api/sendMessage', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({ operator: session.user.name, bloodType: bloodType, hospital: hospitalName, priority: priority }),
-            // });
-            // const apiResponse = await messageRes.json();
+            const messageRes = await fetch('/api/sendMessage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ operator: session.user.name, bloodType: bloodType, hospital: hospitalName, priority: priority }),
+            });
+            const apiResponse = await messageRes.json();
 
-            // if (apiResponse.success) {
-            //     console.log('SMS sent successfully.')
-            // } else {
-            //     console.log('SMS failed to send.')
-            // }
+            if (apiResponse.success) {
+                console.log('SMS sent successfully.')
+            } else {
+                console.log('SMS failed to send.')
+            }
         }).catch((err) => {
             console.log(err);
             return (
