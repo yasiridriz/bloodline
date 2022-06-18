@@ -122,7 +122,7 @@ const Layout = ({ children }) => {
           <ul>
             {menuLinks.filter(link => !link.drawerOnly).map((link, index) => (
               <li key={index}>
-                <Link href={link.href} activeClassName="active"><a>{link.label}</a></Link>
+                <Link href={link.href} activeClassName="active"><a onClick={() => { if (link.onClick) { link.onClick() } }}>{link.label}</a></Link>
               </li>
             ))}
             {/* <li>

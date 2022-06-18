@@ -58,6 +58,20 @@ const Hospitals = (props) => {
             mutateRequests();
             setIsSubmitting(false);
             setHasSubmitted(true);
+            const messageRes = await fetch('/api/sendMessage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ operator: session.user.name, bloodType: bloodType, hospital: hospitalName }),
+            });
+            const apiResponse = await messageRes.json();
+
+            if (apiResponse.success) {
+                console.log('SMS sent successfully.')
+            } else {
+                console.log('SMS failed to send.')
+            }
         }).catch((err) => {
             console.log(err);
             return (
@@ -174,7 +188,7 @@ const Hospitals = (props) => {
                                                         {request.status == "1" && (
                                                             <button className='button small' onClick={() => handleDeactivate(request._id)}>Deactivate</button>
                                                         )}
-                                                        <button className='button small' onClick={() => handleDelete(request._id)} disabled={isDeleting ? 'true' : ''}>{isDeleting ? "..." : t("Delete") }</button>
+                                                        <button className='button small' onClick={() => handleDelete(request._id)} disabled={isDeleting ? 'true' : ''}>{isDeleting ? "..." : t("Delete")}</button>
                                                     </div>
                                                 </div>
                                             </div>
