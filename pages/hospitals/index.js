@@ -41,6 +41,7 @@ const Hospitals = (props) => {
     const [location, setLocation] = useState(locations[0])
     const [hospital, setHospital] = useState(hospitalName)
     const [status, setStatus] = useState('1')
+    const [priority, setPriority] = useState("Default")
 
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [hasSubmitted, setHasSubmitted] = useState(false)
@@ -53,25 +54,26 @@ const Hospitals = (props) => {
             hospital: hospital,
             bloodType: bloodType,
             location: location,
-            status: status
+            status: status,
+            priority: priority,
         }).then(async (res) => {
             mutateRequests();
             setIsSubmitting(false);
             setHasSubmitted(true);
-            const messageRes = await fetch('/api/sendMessage', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ operator: session.user.name, bloodType: bloodType, hospital: hospitalName }),
-            });
-            const apiResponse = await messageRes.json();
+            // const messageRes = await fetch('/api/sendMessage', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({ operator: session.user.name, bloodType: bloodType, hospital: hospitalName, priority: priority }),
+            // });
+            // const apiResponse = await messageRes.json();
 
-            if (apiResponse.success) {
-                console.log('SMS sent successfully.')
-            } else {
-                console.log('SMS failed to send.')
-            }
+            // if (apiResponse.success) {
+            //     console.log('SMS sent successfully.')
+            // } else {
+            //     console.log('SMS failed to send.')
+            // }
         }).catch((err) => {
             console.log(err);
             return (
@@ -147,6 +149,14 @@ const Hospitals = (props) => {
                                         <option>AB-</option>
                                         <option>0+</option>
                                         <option>0-</option>
+                                    </select>
+                                </div>
+                                <div variants={content} className="group">
+                                    <label>{t('Priority')}</label>
+                                    <select onChange={(e) => setPriority(e.target.value)} value={priority} name='priority'>
+                                        <option>Level 1</option>
+                                        <option>Level 2</option>
+                                        <option>Level 3</option>
                                     </select>
                                 </div>
                                 <input type="submit" className="button" value={isSubmitting ? 'Sending...' : 'Send'} disabled={isSubmitting ? "true" : ""} />

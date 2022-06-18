@@ -32,6 +32,7 @@ export const LangStrings = {
         Location: "Location",
         Hospital: "Hospital",
         Latest: "Latest Requests",
+        Priority: "Priority",
 
     },
     mk: {
@@ -67,6 +68,7 @@ export const LangStrings = {
         Location: "Локација",
         Hospital: "Болница",
         Latest: "Најнови барања",
+        Priority: "Priority",
     },
     al: {
         Home: "Hyrja",
@@ -101,5 +103,6 @@ export const LangStrings = {
         Location: "Lokacioni",
         Hospital: "Spitali",
         Latest: "Kërkesat e fundit",
+        Priority: "Priority",
     },
 }

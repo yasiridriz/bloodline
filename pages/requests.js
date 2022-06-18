@@ -48,6 +48,10 @@ const Requests = () => {
                                                                 )}
                                                         </h5>
                                                     </div>
+                                                    <div className="col-md-4">
+                                                        <p> {t('Priority')} </p>
+                                                        <h2><span>{request.priority}</span> </h2>
+                                                    </div>
                                                 </div>
                                             </li>
 
