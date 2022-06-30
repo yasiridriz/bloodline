@@ -1,9 +1,7 @@
 import Head from 'next/head';
 import Link from './link'; // custom link component for active styles
 import NProgress from 'nprogress';
-
 import { useState } from 'react';
-
 import useTranslation from '../../hooks/useTranslation';
 import nprogress from 'nprogress';
 import { signIn, useSession, signOut } from 'next-auth/react';
@@ -53,7 +51,6 @@ const Layout = ({ children }) => {
   return (
     <>
       <Head>
-
         {/* Metatags only */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>
@@ -85,32 +82,8 @@ const Layout = ({ children }) => {
               <Link href={link.href} activeClassName="active"><a onClick={() => { toggleDrawer(); if (link.onClick) { link.onClick() } }}>{link.label}</a></Link>
             </li>
           ))}
-          {/* <li>
-            <Link activeClassName="active" href="/" ><a onClick={toggleDrawer}>{t("Home")}</a></Link>
-          </li>
-          <li>
-            <Link activeClassName="active" href="/donate" ><a onClick={toggleDrawer}>{t("Donate")}</a></Link>
-          </li>
-          <li>
-            <Link activeClassName="active" href="/requests" ><a onClick={toggleDrawer}>{t("Requests")}</a></Link>
-          </li>
-          {status === "authenticated" && (
-            <li>
-              <Link activeClassName="active" href="/hospitals" ><a onClick={toggleDrawer}>{session.user.name}</a></Link>
-            </li>
-          ) || (
-              <li>
-                <Link activeClassName="active" href="/login" ><a onClick={toggleDrawer}>Login</a></Link>
-              </li>
-            )}
-          {status === 'authenticated' && (
-            <li>
-              <a href='#signout' onClick={signOut}>Sign out</a>
-            </li>
-          )} */}
         </ul>
       </div>
-
       <div className='navContainer'>
         <div onClick={toggleDrawer} className={drawer ? 'menu open' : 'menu'}>
           <div className="bars">
@@ -125,38 +98,6 @@ const Layout = ({ children }) => {
                 <Link href={link.href} activeClassName="active"><a onClick={() => { if (link.onClick) { link.onClick() } }}>{link.label}</a></Link>
               </li>
             ))}
-            {/* <li>
-              <Link href={`/`} activeClassName='active'>
-                <a>
-                  {t("Home")}
-                </a>
-              </Link>
-            </li>
-            <li>
-              <Link href={`/donate`} activeClassName='active'>
-                <a>
-                  {t("Donate")}
-                </a>
-              </Link>
-            </li>
-            {status === "authenticated" && (
-              <li>
-                <Link activeClassName="active" href="/hospitals" ><a>{session.user.name}</a></Link>
-              </li>
-            ) || (
-                <li>
-                  <Link href={`/requests`} activeClassName='active'>
-                    <a>
-                      {t("Requests")}
-                    </a>
-                  </Link>
-                </li>
-              )}
-            {status === 'authenticated' && (
-              <li>
-                <a href='#signout' onClick={signOut}>Sign out</a>
-              </li>
-            )} */}
             <li className="lang" style={{ position: 'absolute', right: '0' }}>
               <div>
                 {locales.map((l) => (
@@ -165,12 +106,10 @@ const Layout = ({ children }) => {
                       {l}
                     </a> &nbsp; &nbsp;
                   </span>
-
                 ))}
               </div>
             </li>
           </ul>
-
         </nav>
       </div>
       {children}
@@ -179,7 +118,6 @@ const Layout = ({ children }) => {
           <a href='mailto:bloodlinemacedonia@gmail.com'>{t("EmailUs")} &rarr;</a>
         </div>
         <p> &copy; 2022 Bloodline Macedonia</p>
-        {/* <p> With <span style={{ color: '#DA3237' }}>&hearts;</span> from Bloodline Team </p> */}
       </div>
     </>
   )

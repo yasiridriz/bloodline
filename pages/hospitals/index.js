@@ -78,9 +78,9 @@ const Hospitals = (props) => {
             console.log(err);
             return (
                 <motion.div className='form-box' style={{ paddingTop: '25%' }} initial='initial' animate='enter' exit='exit' variants={container}>
-                    <motion.h3 variants={content} style={{ textAlign: 'center', color: 'darkred' }}>There was a problem while saving your information, please try again later.</motion.h3>
+                    <motion.h3 variants={content} style={{ textAlign: 'center', color: 'darkred' }}>{t('ProblemSaving')}</motion.h3>
                     <motion.div variants={content} className='group row justify-content-center'>
-                        <Link href='/'><a>Go back to the homepage &rarr;</a></Link>
+                        <Link href='/'><a>{t('BackToHome')} &rarr;</a></Link>
                     </motion.div>
                 </motion.div>
             )
@@ -118,7 +118,7 @@ const Hospitals = (props) => {
             <div className={styles.main}>
                 <div className="form-box">
                     <motion.h1 variants={content}>
-                        Manage your requests
+                        {t('ManageRequests')}
                         <br /><br />
                         <b>{props.session.user.name}</b>
                         <br />
@@ -126,7 +126,7 @@ const Hospitals = (props) => {
                     </motion.h1>
                     <div className='row justify-content-center' >
                         <motion.div variants={content} className='col-md-7' style={{ margin: '3em 0' }}>
-                            <h2> New Request </h2>
+                            <h2> {t('NewRequest')} </h2>
                             <form onSubmit={handleSend}>
                                 {hospitalData && (
                                     <div className="group">
@@ -154,22 +154,22 @@ const Hospitals = (props) => {
                                 <div variants={content} className="group">
                                     <label>{t('Priority')}</label>
                                     <select onChange={(e) => setPriority(e.target.value)} value={priority} name='priority'>
-                                        <option>Level 1</option>
-                                        <option>Level 2</option>
-                                        <option>Level 3</option>
+                                        <option>{t('Level1')}</option>
+                                        <option>{t('Level2')}</option>
+                                        <option>{t('Level3')}</option>
                                     </select>
                                 </div>
-                                <input type="submit" className="button" value={isSubmitting ? 'Sending...' : 'Send'} disabled={isSubmitting ? "true" : ""} />
+                                <input type="submit" className="button" value={isSubmitting ? t('Sending') : t('Send')} disabled={isSubmitting ? "true" : ""} />
                             </form>
                         </motion.div>
                         <motion.div variants={content} className='col-md-7' style={{ margin: '3em 0' }}>
-                            <motion.h2> Previous Requests </motion.h2>
+                            <motion.h2> {t('PreviousRequests')} </motion.h2>
                             <ul className="list">
                                 {requestError && (
-                                    <motion.h3 variants={content} style={{ textAlign: 'center', color: 'darkred' }}>Failed loading requests. Please try again later.</motion.h3>
+                                    <motion.h3 variants={content} style={{ textAlign: 'center', color: 'darkred' }}>{t('FailedLoadingRequests')}</motion.h3>
                                 )}
                                 {requestLoading && (
-                                    <motion.h3 variants={content} style={{ textAlign: 'center' }}>Loading...</motion.h3>
+                                    <motion.h3 variants={content} style={{ textAlign: 'center' }}>{t('Loading')}</motion.h3>
                                 )}
                                 {requests && (
                                     requests.map((request) => (
@@ -196,17 +196,15 @@ const Hospitals = (props) => {
                                                 <div className='row justify-content-start'>
                                                     <div className='buttons'>
                                                         {request.status == "1" && (
-                                                            <button className='button small' onClick={() => handleDeactivate(request._id)}>Deactivate</button>
+                                                            <button className='button small' onClick={() => handleDeactivate(request._id)}>{t('Deactivate')}</button>
                                                         )}
                                                         <button className='button small' onClick={() => handleDelete(request._id)} disabled={isDeleting ? 'true' : ''}>{isDeleting ? "..." : t("Delete")}</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </li>
-
                                     ))
                                 )}
-
                             </ul>
                         </motion.div>
                     </div>

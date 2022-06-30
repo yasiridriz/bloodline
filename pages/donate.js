@@ -64,9 +64,9 @@ const Donate = () => {
 			console.log(err);
 			return (
 				<motion.div className='form-box' style={{ paddingTop: '25%' }} initial='initial' animate='enter' exit='exit' variants={container}>
-					<motion.h3 variants={content} style={{ textAlign: 'center', color: 'darkred' }}>There was a problem while saving your information, please try again later.</motion.h3>
+					<motion.h3 variants={content} style={{ textAlign: 'center', color: 'darkred' }}>{t('ProblemSaving')}</motion.h3>
 					<motion.div variants={content} className='group row justify-content-center'>
-						<Link href='/'><a>Go back to the homepage &rarr;</a></Link>
+						<Link href='/'><a>{t('BackToHome')} &rarr;</a></Link>
 					</motion.div>
 				</motion.div>
 			)
@@ -76,14 +76,12 @@ const Donate = () => {
 	if (hasSubmitted)
 		return (
 			<motion.div className='form-box' style={{ paddingTop: '25%' }} initial='initial' animate='enter' exit='exit' variants={container}>
-				<motion.h3 variants={content} style={{ textAlign: 'center' }}>Thank you for your submission! You can check your email to confirm your information. <br /> We&apos;ll get back to you as soon as possible.</motion.h3>
+				<motion.h3 variants={content} style={{ textAlign: 'center' }}>{t('Thanks')}</motion.h3>
 				<motion.div variants={content} className='group row justify-content-center'>
-					<Link href='/'><a>Go back to the homepage &rarr;</a></Link>
-
+					<Link href='/'><a>{t('BackToHome')} &rarr;</a></Link>
 				</motion.div>
 			</motion.div>
 		)
-
 
 	return (
 		<motion.div variants={container} initial='initial' animate='enter' exit='exit' >
@@ -112,7 +110,6 @@ const Donate = () => {
 									<option>0+</option>
 									<option>0-</option>
 								</select>
-
 							</motion.div>
 							<motion.div variants={content} className="group">
 								<label>{t('PhoneNumber')}*</label>
@@ -128,10 +125,8 @@ const Donate = () => {
 						</div>
 					</div>
 					<br />
-
 				</form>
 			</div>
-
 		</motion.div>
 	);
 }

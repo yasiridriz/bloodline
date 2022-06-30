@@ -40,18 +40,18 @@ const Login = () => {
 					<div className="row justify-content-center">
 						<div className="col-md-7">
 							<motion.div variants={content} className="group">
-								<label>Email*</label>
+								<label>{t('Email')}*</label>
 								<input name='email' type='text' required value={email} onChange={e => setEmail(e.target.value)} />
 							</motion.div>
 							<motion.div variants={content} className="group">
-								<label>Password*</label>
+								<label>{t('Password')}*</label>
 								<input name='password' type='password' required value={password} onChange={e => setPassword(e.target.value)} />
 							</motion.div>
 							<motion.div variants={content}>
 								{isSubmitting && (
-									<input type="submit" className="button" value="Signing in..." disabled />
+									<input type="submit" className="button" value={t('SigningIn')} disabled />
 								) || (
-										<input type="submit" className="button" value="Sign in" />
+										<input type="submit" className="button" value={t('SignIn')} />
 									)}
 							</motion.div>
 						</div>

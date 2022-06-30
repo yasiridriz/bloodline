@@ -21,10 +21,10 @@ const Requests = () => {
                             <motion.div variants={content} className="form-box">
                                 <ul className="list">
                                     {isError && (
-                                        <motion.h3 variants={content} style={{ textAlign: 'center', color: 'darkred' }}>Failed loading requests. Please try again later.</motion.h3>
+                                        <motion.h3 variants={content} style={{ textAlign: 'center', color: 'darkred' }}>{t('FailedLoadingRequests')}</motion.h3>
                                     )}
                                     {isLoading && (
-                                        <motion.h3 variants={content} style={{ textAlign: 'center' }}>Loading...</motion.h3>
+                                        <motion.h3 variants={content} style={{ textAlign: 'center' }}>{t('Loading')}</motion.h3>
                                     )}
                                     {requests && (
                                         requests.map((request) => (
@@ -50,15 +50,15 @@ const Requests = () => {
                                                     </div>
                                                     <div className="col-md-4">
                                                         <p> {t('Priority')} </p>
-                                                        <h2><span>{request.priority}</span> </h2>
+                                                        <h2>
+                                                            <span>{request.priority}</span> 
+                                                        </h2>
                                                     </div>
                                                 </div>
                                             </li>
 
                                         ))
                                     )}
-
-
                                 </ul>
                             </motion.div>
                         </div>
