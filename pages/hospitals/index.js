@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { container, content } from '../../lib/motion/variants';
 
 import client from '../../lib/sanity/client';
+import groq from 'groq';
 import { getSession, useSession } from 'next-auth/react';
 import useTranslation from '../../hooks/useTranslation';
 import useSanity from '../../hooks/useSanity';
@@ -13,10 +14,6 @@ import styles from '../../styles/Home.module.css';
 const Hospitals = (props) => {
     const { t } = useTranslation(); // t function from translation hook.
     const { data: session, status: authstatus } = useSession(); // session from next-auth/react.
-
-    // Get requests, isLoading state, and any Error from custom hook.
-    const requestsQuery = '*[_type == "request"]';
-    const { data: requests, isLoading: requestLoading, isError: requestError, mutate: mutateRequests } = useSanity(requestsQuery);
 
     // Get institute and its locations from user's institution.
     let hospitalQuery;
@@ -29,19 +26,24 @@ const Hospitals = (props) => {
           }`;
     }
     const { data: hospitalData, isLoading: hospitalLoading, isError: hospitalError } = useSanity(hospitalQuery);
-    let hospitalName = '';
     let locations = [];
-    if (hospitalData) {
-        hospitalName = hospitalData.hospital.name;
-        locations = hospitalData.hospital.locations;
-    }
+
+    // // Get requests, isLoading state, and any Error from custom hook.
+    // const requestsQuery = `*[_type == "request" && hospital == "${hospitalName}" ]`;
+    // const { data: requests, isLoading: requestLoading, isError: requestError, mutate: mutateRequests } = useSanity(requestsQuery);
+    const requests = props.requests;
 
     // Form fields: 
     const [bloodType, setBloodType] = useState('A+')
-    const [location, setLocation] = useState(locations[0])
-    const [hospital, setHospital] = useState(hospitalName)
+    const [location, setLocation] = useState('Karpoš')
+    const [hospital, setHospital] = useState('Acibadem Sistina')
     const [status, setStatus] = useState('1')
-    const [priority, setPriority] = useState("Default")
+    const [priority, setPriority] = useState('1')
+
+    if (!hospitalLoading) {
+        locations = hospitalData.hospital.locations
+        hospitalName = hospitalData.hospital.name
+    }
 
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [hasSubmitted, setHasSubmitted] = useState(false)
@@ -171,9 +173,9 @@ const Hospitals = (props) => {
                                 <div variants={content} className="group">
                                     <label>{t('Priority')}</label>
                                     <select onChange={(e) => setPriority(e.target.value)} value={priority} name='priority'>
-                                        <option>{t('Level1')}</option>
-                                        <option>{t('Level2')}</option>
-                                        <option>{t('Level3')}</option>
+                                        <option value={"1"}>{t('Level1')}</option>
+                                        <option value={"2"}>{t('Level2')}</option>
+                                        <option value={"3"}>{t('Level3')}</option>
                                     </select>
                                 </div>
                                 <input type="submit" className="button" value={isSubmitting ? t('Sending') : t('Send')} disabled={isSubmitting ? "true" : ""} />
@@ -182,12 +184,12 @@ const Hospitals = (props) => {
                         <motion.div variants={content} className='col-md-7' style={{ margin: '3em 0' }}>
                             <motion.h2> {t('PreviousRequests')} </motion.h2>
                             <ul className="list">
-                                {requestError && (
+                                {/* {requestError && (
                                     <motion.h3 variants={content} style={{ textAlign: 'center', color: 'darkred' }}>{t('FailedLoadingRequests')}</motion.h3>
                                 )}
                                 {requestLoading && (
                                     <motion.h3 variants={content} style={{ textAlign: 'center' }}>{t('Loading')}</motion.h3>
-                                )}
+                                )} */}
                                 {requests && (
                                     requests.map((request) => (
                                         <li key={request._id}>
@@ -233,6 +235,10 @@ const Hospitals = (props) => {
 
 export async function getServerSideProps(context) {
     const session = await getSession({ req: context.req });
+    const res = await client.fetch(groq`*[_type = requests && hospital = "${hospitalName}" ]`);
+    var requests;
+    if (res)
+        requests = res.Data;
     if (!session) {
         return {
             redirect: {
@@ -244,7 +250,8 @@ export async function getServerSideProps(context) {
 
     return {
         props: {
-            session
+            session: session,
+            requests: requests
         }
     };
 }
