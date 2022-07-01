@@ -15,10 +15,6 @@ const Hospitals = (props) => {
     const { t } = useTranslation(); // t function from translation hook.
     const { data: session, status: authstatus } = useSession(); // session from next-auth/react.
 
-    // Get requests, isLoading state, and any Error from custom hook.
-    const requestsQuery = '*[_type == "request"]';
-    const { data: requests, isLoading: requestLoading, isError: requestError, mutate: mutateRequests } = useSanity(requestsQuery);
-
     // Get institute and its locations from user's institution.
     let hospitalQuery;
     if (authstatus == 'authenticated') {
@@ -30,19 +26,24 @@ const Hospitals = (props) => {
           }`;
     }
     const { data: hospitalData, isLoading: hospitalLoading, isError: hospitalError } = useSanity(hospitalQuery);
-    let hospitalName = '';
     let locations = [];
-    if (hospitalData) {
-        hospitalName = hospitalData.hospital.name;
-        locations = hospitalData.hospital.locations;
-    }
+
+    // // Get requests, isLoading state, and any Error from custom hook.
+    // const requestsQuery = `*[_type == "request" && hospital == "${hospitalName}" ]`;
+    // const { data: requests, isLoading: requestLoading, isError: requestError, mutate: mutateRequests } = useSanity(requestsQuery);
+    const requests = props.requests;
 
     // Form fields: 
     const [bloodType, setBloodType] = useState('A+')
-    const [location, setLocation] = useState(locations[0])
-    const [hospital, setHospital] = useState(hospitalName)
+    const [location, setLocation] = useState('Karpoš')
+    const [hospital, setHospital] = useState('Acibadem Sistina')
     const [status, setStatus] = useState('1')
     const [priority, setPriority] = useState('1')
+
+    if (!hospitalLoading) {
+        locations = hospitalData.hospital.locations
+        hospitalName = hospitalData.hospital.name
+    }
 
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [hasSubmitted, setHasSubmitted] = useState(false)
@@ -166,12 +167,12 @@ const Hospitals = (props) => {
                         <motion.div variants={content} className='col-md-7' style={{ margin: '3em 0' }}>
                             <motion.h2> {t('PreviousRequests')} </motion.h2>
                             <ul className="list">
-                                {requestError && (
+                                {/* {requestError && (
                                     <motion.h3 variants={content} style={{ textAlign: 'center', color: 'darkred' }}>{t('FailedLoadingRequests')}</motion.h3>
                                 )}
                                 {requestLoading && (
                                     <motion.h3 variants={content} style={{ textAlign: 'center' }}>{t('Loading')}</motion.h3>
-                                )}
+                                )} */}
                                 {requests && (
                                     requests.map((request) => (
                                         <li key={request._id}>
@@ -217,7 +218,10 @@ const Hospitals = (props) => {
 
 export async function getServerSideProps(context) {
     const session = await getSession({ req: context.req });
-    const requests = await client.
+    const res = await client.fetch(groq`*[_type = requests && hospital = "${hospitalName}" ]`);
+    var requests;
+    if (res)
+        requests = res.Data;
     if (!session) {
         return {
             redirect: {
@@ -229,7 +233,8 @@ export async function getServerSideProps(context) {
 
     return {
         props: {
-            session
+            session: session,
+            requests: requests
         }
     };
 }
