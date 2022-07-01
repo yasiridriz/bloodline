@@ -235,7 +235,7 @@ const Hospitals = (props) => {
 
 export async function getServerSideProps(context) {
     const session = await getSession({ req: context.req });
-    const res = await client.fetch(groq`*[_type = requests && hospital = "Acibadem Sistina" ]`);
+    const res = await client.fetch(groq`*[_type == requests && hospital=="Acibadem Sistina" ]`);
     var requests;
     if (res)
         requests = res.Data;
