@@ -3,13 +3,16 @@ import { container, content } from '../lib/motion/variants';
 import styles from '../styles/Home.module.css';
 
 import useSanity from '../hooks/useSanity';
+import groq from 'groq';
 
 import useTranslation from '../hooks/useTranslation';
 
-const Requests = () => {
+const Requests = (props) => {
     const { t } = useTranslation();
     const query = `*[_type == "request" && status == "1"]`;
-    const { data: requests, isLoading, isError } = useSanity(query)
+    // const { data: requests, isLoading, isError } = useSanity(query)
+
+    const requests = props.requests;
 
     return (
         <motion.div variants={container} initial='initial' animate='enter' exit='exit' >
@@ -38,22 +41,6 @@ const Requests = () => {
                                                         <p> {t('Location')} </p>
                                                         <h2><span>{request.location}</span> </h2>
                                                     </div>
-                                                    <div className="col-md-4">
-                                                        <p> {t('Status')} </p>
-                                                        <h5>
-                                                            {request.status == "1" && (
-                                                                <span className='status'> {t('Active')}</span>
-                                                            ) || (
-                                                                    <span className='status completed' >{t('Completed')}</span>
-                                                                )}
-                                                        </h5>
-                                                    </div>
-                                                    <div className="col-md-4">
-                                                        <p> {t('Priority')} </p>
-                                                        <h2>
-                                                            <span>{request.priority}</span> 
-                                                        </h2>
-                                                    </div>
                                                 </div>
                                             </li>
 
@@ -68,6 +55,17 @@ const Requests = () => {
             </div >
         </motion.div >
     );
+}
+
+const getServerSideProps = async (context) => {
+    
+    const query = groq`*[_type == "request" && status == "1"]`;
+    const requests = client.fetch(query);
+    return {
+        props: {
+            requests: requests.data
+        },
+    };
 }
 
 export default Requests;

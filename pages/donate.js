@@ -12,7 +12,8 @@ import useTranslation from '../hooks/useTranslation';
 const Donate = () => {
 	const { t } = useTranslation();
 
-	// Donor must be above 18 to register: 
+	// Donor must be above 18 to register:
+	// Create new Date
 	let date = new Date();
 	date.setFullYear(date.getFullYear() - 18);
 	let dateString = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
@@ -41,7 +42,7 @@ const Donate = () => {
 			})
 		}
 		catch (error) {
-			console.log('couldnt send mail: %e', error)
+			console.log("Couldn't send mail: %e", error)
 		}
 
 	}

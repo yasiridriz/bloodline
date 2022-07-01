@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { container, content } from '../../lib/motion/variants';
 
 import client from '../../lib/sanity/client';
+import groq from 'groq';
 import { getSession, useSession } from 'next-auth/react';
 import useTranslation from '../../hooks/useTranslation';
 import useSanity from '../../hooks/useSanity';
@@ -41,7 +42,7 @@ const Hospitals = (props) => {
     const [location, setLocation] = useState(locations[0])
     const [hospital, setHospital] = useState(hospitalName)
     const [status, setStatus] = useState('1')
-    const [priority, setPriority] = useState("Default")
+    const [priority, setPriority] = useState('1')
 
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [hasSubmitted, setHasSubmitted] = useState(false)
@@ -154,9 +155,9 @@ const Hospitals = (props) => {
                                 <div variants={content} className="group">
                                     <label>{t('Priority')}</label>
                                     <select onChange={(e) => setPriority(e.target.value)} value={priority} name='priority'>
-                                        <option>{t('Level1')}</option>
-                                        <option>{t('Level2')}</option>
-                                        <option>{t('Level3')}</option>
+                                        <option value={"1"}>{t('Level1')}</option>
+                                        <option value={"2"}>{t('Level2')}</option>
+                                        <option value={"3"}>{t('Level3')}</option>
                                     </select>
                                 </div>
                                 <input type="submit" className="button" value={isSubmitting ? t('Sending') : t('Send')} disabled={isSubmitting ? "true" : ""} />
@@ -216,6 +217,7 @@ const Hospitals = (props) => {
 
 export async function getServerSideProps(context) {
     const session = await getSession({ req: context.req });
+    const requests = await client.
     if (!session) {
         return {
             redirect: {

@@ -31,6 +31,7 @@ export default async (req, res) => {
     try {
 		// TODO: fix sending email
 		await sgMail.send(msg);
+		console.log('Email sent');
         res.json({ message: `Email has been sent to ${email}` })
     } catch (error) {
         res.status(500).json({ "error": "Couldn't send mail." })
