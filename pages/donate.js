@@ -1,12 +1,9 @@
 import styles from '../styles/Home.module.css';
 import Link from "next/link";
 import { useState } from 'react';
-
 import client from '../lib/sanity/client';
-
 import { motion } from 'framer-motion';
 import { container, content } from '../lib/motion/variants';
-
 import useTranslation from '../hooks/useTranslation';
 
 const Donate = () => {
@@ -30,28 +27,27 @@ const Donate = () => {
 	const mail = async (e) => {
 		try {
 			await fetch("/api/sendmail", {
-				"method": "POST",
-				"headers": { "content-type": "application/json" },
-				"body": JSON.stringify({
-					"name": name,
-					"birthDate": birthDate,
-					"bloodType": bloodType,
-					"phone": phone,
-					"email": email,
-				})
+				method: "POST",
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					name: name,
+					birthDate: birthDate,
+					bloodType: bloodType,
+					phone: phone,
+					email: email,
+				}),
 			})
 		}
 		catch (error) {
 			console.log("Couldn't send mail: %e", error)
 		}
-
 	}
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		setIsSubmitting(true)
 		client.create({
-			_type: 'user',
+			_type: 'donor',
 			name,
 			birthDate,
 			bloodType,

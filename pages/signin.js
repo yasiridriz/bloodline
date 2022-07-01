@@ -2,11 +2,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 import { container, content } from '../lib/motion/variants';
-
 import { signIn } from 'next-auth/react';
-
 import useTranslation from '../hooks/useTranslation';
-
 import styles from '../styles/Home.module.css';
 
 const Login = () => {
@@ -57,7 +54,6 @@ const Login = () => {
 						</div>
 					</div>
 					<br />
-
 				</form>
 			</div>
 		</motion.div>

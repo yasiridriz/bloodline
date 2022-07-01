@@ -43,7 +43,6 @@ const Requests = (props) => {
                                                     </div>
                                                 </div>
                                             </li>
-
                                         ))
                                     )}
                                 </ul>
