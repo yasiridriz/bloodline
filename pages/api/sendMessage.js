@@ -1,4 +1,3 @@
-
 import twilio from 'twilio';
 
 export default function sendMessage(req, res) {
