@@ -48,6 +48,22 @@ const Hospitals = (props) => {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [hasSubmitted, setHasSubmitted] = useState(false)
 
+    const mail = async (e) => {
+		try {
+			await fetch("/api/sendMailAll", {
+				method: "POST",
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					bloodType: bloodType,
+                    hospital: hospital,
+				}),
+			})
+		}
+		catch (error) {
+			console.log('couldnt send mail: %e', error)
+		}
+	}
+
     const handleSend = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -60,6 +76,7 @@ const Hospitals = (props) => {
             priority: priority,
         }).then(async (res) => {
             mutateRequests();
+            mail();
             setIsSubmitting(false);
             setHasSubmitted(true);
             const messageRes = await fetch('/api/sendMessage', {
