@@ -2,7 +2,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { container, content } from '../../lib/motion/variants';
-
 import client from '../../lib/sanity/client';
 import groq from 'groq';
 import { getSession, useSession } from 'next-auth/react';
@@ -42,7 +41,7 @@ const Hospitals = (props) => {
 
     if (!hospitalLoading) {
         locations = hospitalData.hospital.locations
-        hospitalName = hospitalData.hospital.name
+        hospital = hospitalData.hospital.name
     }
 
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -84,7 +83,7 @@ const Hospitals = (props) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ operator: session.user.name, bloodType: bloodType, hospital: hospitalName, priority: priority }),
+                body: JSON.stringify({ operator: session.user.name, bloodType: bloodType, hospital: hospital, priority: priority }),
             });
             const apiResponse = await messageRes.json();
 
@@ -141,7 +140,7 @@ const Hospitals = (props) => {
                         <br /><br />
                         <b>{props.session.user.name}</b>
                         <br />
-                        <span style={{ fontSize: '80%' }}>{hospitalName}</span>
+                        <span style={{ fontSize: '80%' }}>{hospital}</span>
                     </motion.h1>
                     <div className='row justify-content-center' >
                         <motion.div variants={content} className='col-md-7' style={{ margin: '3em 0' }}>
@@ -178,7 +177,7 @@ const Hospitals = (props) => {
                                         <option value={"3"}>{t('Level3')}</option>
                                     </select>
                                 </div>
-                                <input type="submit" className="button" value={isSubmitting ? t('Sending') : t('Send')} disabled={isSubmitting ? "true" : ""} />
+                                <input type="submit" className="button" value={isSubmitting ? t('Sending') : t('Send')} disabled={isSubmitting ? true : ""} />
                             </form>
                         </motion.div>
                         <motion.div variants={content} className='col-md-7' style={{ margin: '3em 0' }}>
@@ -217,7 +216,7 @@ const Hospitals = (props) => {
                                                         {request.status == "1" && (
                                                             <button className='button small' onClick={() => handleDeactivate(request._id)}>{t('Deactivate')}</button>
                                                         )}
-                                                        <button className='button small' onClick={() => handleDelete(request._id)} disabled={isDeleting ? 'true' : ''}>{isDeleting ? "..." : t("Delete")}</button>
+                                                        <button className='button small' onClick={() => handleDelete(request._id)} disabled={isDeleting ? true : ''}>{isDeleting ? "..." : t("Delete")}</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -235,10 +234,11 @@ const Hospitals = (props) => {
 
 export async function getServerSideProps(context) {
     const session = await getSession({ req: context.req });
-    const res = await client.fetch(groq`*[_type == requests && hospital=="Acibadem Sistina" ]`);
+    // TODO: OPTIMIZE QUERRY
+    const res = await client.fetch(groq`*[_type=="request" && hospital=="Acibadem Sistina"]`);
     var requests;
     if (res)
-        requests = res.Data;
+        requests = res;
     if (!session) {
         return {
             redirect: {
